@@ -4,20 +4,17 @@ import ReactDOM from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
-import { white,cyan500 } from 'material-ui/styles/colors'
-import {Card, CardText} from 'material-ui/Card'
-import AppBar from 'material-ui/AppBar'
+import { white,cyan300 } from 'material-ui/styles/colors'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from 'material-ui/TextField'
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 
 import AdvancedBar from './component/AdvancedBar'
 import baseTheme   from './component/baseTheme'
+import Content     from './component/Content'
 import DelButton   from './component/DelButton'
-import EditButton  from './component/EditButton'
-import PinButton   from './component/PinButton'
+import TitleBar    from './component/TitleBar'
 
 class App extends Component {
   constructor() {
@@ -30,7 +27,7 @@ class App extends Component {
     this.state.mode = data.mode
     this.state.pinned = data.pinned
     this.state.advancedMode = data.advancedMode
-    this.themeColor = data.themeColor ? data.themeColor : cyan500
+    this.themeColor = data.themeColor ? data.themeColor : cyan300
     this.state.theme = getMuiTheme(baseTheme(this.themeColor))
     this.win = remote.getCurrentWindow()
     this.winWidth = this.win.getSize()[0]
@@ -40,6 +37,8 @@ class App extends Component {
     this.pinHandler = this.pinHandler.bind(this)
     this.changeColor = this.changeColor.bind(this)
     this.getHeight = this.getHeight.bind(this)
+    this.getContent = this.getContent.bind(this)
+    this.getTitle = this.getTitle.bind(this)
   }
 
   getHeight(){
@@ -66,9 +65,9 @@ class App extends Component {
   editHandler(){
     this.setWinHeight(400)
     this.setState({mode: 'edit'})
-    this.tID = setInterval(() => {
-      this.setWinHeight(this.getHeight())
-    }, 100)
+    // this.tID = setInterval(() => {
+    //   this.setWinHeight(this.getHeight())
+    // }, 100)
   }
 
   delHandler(){
@@ -104,10 +103,10 @@ class App extends Component {
       return (
         <TextField
           id = 'title-edit'
+          hintText = '输入标题'
           fullWidth = {false}
-          style={{webkitAppRegion: 'no-drag'}}
+          className = 'no-drag'
           inputStyle={{color:white}}
-          underlineFocusStyle={{borderBottomColor:white}}
           defaultValue={this.state.title}
           onChange={(e, v) => this.setState({title:v})}
         />
@@ -124,6 +123,7 @@ class App extends Component {
         <TextField
           id = 'content-edit'
           fullWidth = {true}
+          hintText = '输入便签内容'
           defaultValue={this.state.content}
           multiLine={true}
           style={{fontSize:'14px'}}
@@ -173,21 +173,10 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={this.state.theme}>
         <div>
-          <DelButton mode={this.state.mode} delHandler={this.delHandler}/>
-          <AppBar title={this.getTitle()}
-                  showMenuIconButton={true}
-                  style={{webkitUserSelect: 'none', webkitAppRegion: 'drag'}}
-                  titleStyle={{fontSize:'20px'}}
-                  iconElementRight={<EditButton mode={this.state.mode} editHandler={this.editHandler} saveHandler={this.saveHandler}/>}
-                  iconElementLeft={<PinButton pinned={this.state.pinned} pinHandler={this.pinHandler}/>}
-                  iconStyleLeft={{marginRight: '0px'}}
-                  />
+          <TitleBar getTitle={this.getTitle} getHeight={this.getHeight} mode={this.state.mode} pinned={this.state.pinned}
+                    editHandler={this.editHandler} saveHandler={this.saveHandler} pinHandler={this.pinHandler}/>
           <AdvancedBar mode={this.state.mode} advancedMode={this.state.advancedMode} changeColor={this.changeColor} getHeight={this.getHeight}/>
-          <Card rounded={false}>
-            <CardText>
-              {this.getContent()}
-            </CardText>
-          </Card>
+          <Content getContent={this.getContent} />
         </div>
       </MuiThemeProvider>
     )

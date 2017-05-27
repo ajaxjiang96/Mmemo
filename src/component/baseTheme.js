@@ -14,6 +14,9 @@ export default function(c){
       palette: {
         primary1Color: c
       },
+      textField: {
+        focusColor: 'rgba(255, 255, 255, 0.87)'
+      },
       fontFamily: 'Roboto,Helvetica,Arial,"PingFang SC","Heiti SC","Microsoft YaHei UI","Microsoft YaHei",SimHei,sans-serif'
     }
 

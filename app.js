@@ -33,7 +33,7 @@ if (!conf.has('advancedMode')) conf.set('advancedMode', false)
 const memoPagePath = path.resolve(__dirname,  'src', 'memo.html')
 const aboutPagePath = path.resolve(__dirname, 'src', 'about.html')
 
-let debug = false
+let debug = true
 let tray = null
 let aboutWindow
 let memoWindows = {}
