@@ -32,7 +32,7 @@
   "dependencies": {
     "electron-config": "^1.0.0",
     "electron-window": "^0.8.1",
-    "electron": "^1.6.7",
+    "electron": "^7.2.4",
     "opn": "^5.0.0",
     "shortid": "^2.2.8"
   }
